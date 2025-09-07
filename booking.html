@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking & Reservation</title>
+  <link rel="stylesheet" href="booking.css">
+</head>
+<body>
+  <div class="container">
+    <h2 id="bookingTitle">Booking & Reservation Management</h2>
+
+    <!-- Tabs for sub-modules -->
+    <div class="tabs">
+      <div class="tab active" data-tab="availability">Room Availability</div>
+      <div class="tab" data-tab="new-booking">New Booking</div>
+      <div class="tab" data-tab="modify-booking">Modify Reservation</div>
+      <div class="tab" data-tab="cancel-booking">Cancel Reservation</div>
+    </div>
+
+    <!-- Room Availability Check -->
+    <div class="tab-content active" id="availability-content">
+      <div class="card">
+        <h3>Check Room Availability</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="check-date">Date</label>
+            <input type="date" id="check-date" required>
+          </div>
+          <div class="form-group">
+            <label for="room-type-filter">Room Type</label>
+            <select id="room-type-filter">
+              <option value="">All Types</option>
+              <option>Single</option>
+              <option>Double</option>
+              <option>Suite</option>
+              <option>Family</option>
+            </select>
+          </div>
+        </div>
+        <button id="check-availability-btn">Check Availability</button>
+        
+        <div class="availability-results">
+          <h3 style="margin-top: 20px;">Availability Results</h3>
+          <div class="availability-grid" id="availability-results">
+            <!-- Room availability will be displayed here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Booking Form -->
+    <div class="tab-content" id="new-booking-content">
+      <form id="bookingForm" class="card">
+        <h3>Create New Booking</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="guest-name">Guest Name*</label>
+            <input type="text" id="guest-name" placeholder="Full Name" required>
+          </div>
+          <div class="form-group">
+            <label for="guest-phone">Phone Number*</label>
+            <input type="text" id="guest-phone" placeholder="e.g., 03001234567" required>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="check-in">Check-in Date*</label>
+            <input type="date" id="check-in" required>
+          </div>
+          <div class="form-group">
+            <label for="check-out">Check-out Date*</label>
+            <input type="date" id="check-out" required>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="booking-room-type">Room Type*</label>
+            <select id="booking-room-type" required>
+              <option value="">Select type</option>
+              <option>Single</option>
+              <option>Double</option>
+              <option>Suite</option>
+              <option>Family</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="room-number">Room Number*</label>
+            <select id="room-number" required>
+              <option value="">Select room</option>
+              <!-- Rooms will be populated based on type and availability -->
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="special-requests">Special Requests</label>
+          <input type="text" id="special-requests" placeholder="Any special requirements">
+        </div>
+        
+        <button type="submit">Confirm Booking</button>
+      </form>
+    </div>
+
+    <!-- Modify Reservation -->
+    <div class="tab-content" id="modify-booking-content">
+      <div class="card">
+        <h3>Modify Existing Reservation</h3>
+        <div class="form-group">
+          <label for="search-booking">Search Booking (by Guest Name or Booking ID)</label>
+          <input type="text" id="search-booking" placeholder="Enter name or booking ID">
+        </div>
+        <button id="search-booking-btn">Search</button>
+        
+        <div id="modify-booking-form" style="display: none;">
+          <h3 style="margin-top: 20px;">Booking Details</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-guest-name">Guest Name*</label>
+              <input type="text" id="edit-guest-name" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-guest-phone">Phone Number*</label>
+              <input type="text" id="edit-guest-phone" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-check-in">Check-in Date*</label>
+              <input type="date" id="edit-check-in" required>
+            </div>
+            <div class="form-group">
+              <label for="edit-check-out">Check-out Date*</label>
+              <input type="date" id="edit-check-out" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="edit-room-type">Room Type*</label>
+              <select id="edit-room-type" required>
+                <option value="">Select type</option>
+                <option>Single</option>
+                <option>Double</option>
+                <option>Suite</option>
+                <option>Family</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edit-room-number">Room Number*</label>
+              <select id="edit-room-number" required>
+                <option value="">Select room</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="edit-special-requests">Special Requests</label>
+            <input type="text" id="edit-special-requests">
+          </div>
+          
+          <div class="form-group">
+            <label for="edit-booking-status">Status</label>
+            <select id="edit-booking-status">
+              <option value="confirmed">Confirmed</option>
+              <option value="checked-in">Checked In</option>
+              <option value="checked-out">Checked Out</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+          
+          <button id="update-booking-btn">Update Booking</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cancel Reservation -->
+    <div class="tab-content" id="cancel-booking-content">
+      <div class="card">
+        <h3>Cancel Reservation</h3>
+        <div class="form-group">
+          <label for="cancel-search">Search Booking (by Guest Name or Booking ID)</label>
+          <input type="text" id="cancel-search" placeholder="Enter name or booking ID">
+        </div>
+        <button id="search-cancel-btn">Search</button>
+        
+        <div id="cancel-booking-details" style="display: none; margin-top: 20px;">
+          <h3>Booking Details</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Booking ID</label>
+              <p id="cancel-booking-id"></p>
+            </div>
+            <div class="form-group">
+              <label>Guest Name</label>
+              <p id="cancel-guest-name"></p>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Check-in Date</label>
+              <p id="cancel-check-in"></p>
+            </div>
+            <div class="form-group">
+              <label>Check-out Date</label>
+              <p id="cancel-check-out"></p>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Room Type</label>
+              <p id="cancel-room-type"></p>
+            </div>
+            <div class="form-group">
+              <label>Room Number</label>
+              <p id="cancel-room-number"></p>
+            </div>
+          </div>
+          
+          <button id="cancel-booking-btn" style="background: #d32f2f;">Cancel Reservation</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bookings Table -->
+    <div class="table-container">
+      <table id="bookingsTable">
+        <thead>
+          <tr>
+            <th>Booking ID</th>
+            <th>Guest Name</th>
+            <th>Room No</th>
+            <th>Room Type</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="8" class="empty-state">No bookings found. Create a new booking to get started.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="notification" id="notification">Operation completed successfully!</div>
+
+  <script src="booking.js"></script>
+</body>
+</html>

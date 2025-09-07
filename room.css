@@ -1,0 +1,217 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f5f7fa;
+  padding: 20px;
+  color: #333;
+}
+
+#roomTitle {
+  text-align: center;
+  color: #8e0000;
+  margin-bottom: 25px;
+  font-size: 32px;
+  padding: 10px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Form Card */
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  width: 100%;
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* Inputs & Selects */
+input, select {
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+input:focus, select:focus {
+  border-color: #8e0000;
+  box-shadow: 0 0 0 3px rgba(142, 0, 0, 0.2);
+}
+
+/* Form Rows for two-column layout */
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 700px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card Add Button */
+button[type="submit"] {
+  background: #8e0000;
+  color: white;
+  padding: 14px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 10px;
+  width: 100%;
+  transition: background 0.3s;
+}
+
+button[type="submit"]:hover {
+  background: #6b0000;
+}
+
+/* Table Container */
+.table-container {
+  overflow-x: auto;
+  border-radius: 10px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+/* Rooms Table */
+#roomTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+#roomTable th, #roomTable td {
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+  font-size: 15px;
+}
+
+#roomTable th {
+  background: #8e0000;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+}
+
+#roomTable tr:last-child td {
+  border-bottom: none;
+}
+
+#roomTable tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+#roomTable tr:hover {
+  background: #f0f0f0;
+}
+
+/* Status Badges */
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  min-width: 100px;
+}
+
+.badge.available { background: #e6f7ee; color: #0d6832; }
+.badge.occupied { background: #ffe6e6; color: #9e0d0d; }
+.badge.reserved { background: #fff4e6; color: #cc7b0d; }
+.badge.under-maintenance { background: #e6f0ff; color: #0d4b9e; }
+
+/* Action Buttons */
+.action-btn {
+  cursor: pointer;
+  color: #8e0000;
+  background: none;
+  border: none;
+  font-weight: 600;
+  padding: 5px;
+  margin: 0 5px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  background: #8e0000;
+  color: white;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  color: #777;
+}
+
+/* Notification */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  border-radius: 8px;
+  background: #4caf50;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s;
+  z-index: 1000;
+}
+
+.notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  #roomTable th, #roomTable td {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Management</title>
+  <link rel="stylesheet" href="payment.css">
+</head>
+<body>
+  <div class="container">
+    <h2 id="paymentTitle">Payment & Billing Management</h2>
+
+    <!-- Tabs for sub-modules -->
+    <div class="tabs">
+      <div class="tab active" data-tab="generate-bill">Generate Bill</div>
+      <div class="tab" data-tab="view-bills">View Bills</div>
+      <div class="tab" data-tab="update-bill">Update Bill</div>
+      <div class="tab" data-tab="payment-status">Payment Status</div>
+      <div class="tab" data-tab="payment-history">Payment History</div>
+    </div>
+
+    <!-- Generate Bill -->
+    <div class="tab-content active" id="generate-bill-content">
+      <form id="billForm" class="card">
+        <h3>Generate New Bill</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="booking-id">Booking ID*</label>
+            <select id="booking-id" required>
+              <option value="">Select Booking</option>
+              <!-- Bookings will be populated from JavaScript -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="guest-name-bill">Guest Name*</label>
+            <input type="text" id="guest-name-bill" readonly required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="room-number-bill">Room Number*</label>
+            <input type="text" id="room-number-bill" readonly required>
+          </div>
+          <div class="form-group">
+            <label for="room-type-bill">Room Type*</label>
+            <input type="text" id="room-type-bill" readonly required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="check-in-bill">Check-in Date*</label>
+            <input type="date" id="check-in-bill" readonly required>
+          </div>
+          <div class="form-group">
+            <label for="check-out-bill">Check-out Date*</label>
+            <input type="date" id="check-out-bill" readonly required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nights">Number of Nights*</label>
+            <input type="number" id="nights" readonly required>
+          </div>
+          <div class="form-group">
+            <label for="room-rate">Room Rate (PKR)*</label>
+            <input type="number" id="room-rate" readonly required>
+          </div>
+        </div>
+
+        <h4>Additional Services</h4>
+        <div class="services-container">
+          <div class="service-item">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="service-name">Service</label>
+                <select id="service-name">
+                  <option value="">Select Service</option>
+                  <option value="laundry">Laundry Service</option>
+                  <option value="spa">Spa Service</option>
+                  <option value="meal">Additional Meals</option>
+                  <option value="transport">Transportation</option>
+                  <option value="other">Other Service</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="service-price">Price (PKR)</label>
+                <input type="number" id="service-price" min="0" value="0">
+              </div>
+            </div>
+            <button type="button" class="add-service-btn">Add Service</button>
+          </div>
+        </div>
+
+        <div id="services-list">
+          <!-- Added services will appear here -->
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="tax-rate">Tax Rate (%)*</label>
+            <input type="number" id="tax-rate" min="0" max="30" value="13" required>
+          </div>
+          <div class="form-group">
+            <label for="discount">Discount (PKR)</label>
+            <input type="number" id="discount" min="0" value="0">
+          </div>
+        </div>
+
+        <div class="bill-summary">
+          <h4>Bill Summary</h4>
+          <div class="summary-item">
+            <span>Room Charges:</span>
+            <span id="room-charges">0 PKR</span>
+          </div>
+          <div class="summary-item">
+            <span>Service Charges:</span>
+            <span id="service-charges">0 PKR</span>
+          </div>
+          <div class="summary-item">
+            <span>Subtotal:</span>
+            <span id="subtotal">0 PKR</span>
+          </div>
+          <div class="summary-item">
+            <span>Tax:</span>
+            <span id="tax-amount">0 PKR</span>
+          </div>
+          <div class="summary-item">
+            <span>Discount:</span>
+            <span id="discount-amount">0 PKR</span>
+          </div>
+          <div class="summary-item total">
+            <span>Total Amount:</span>
+            <span id="total-amount">0 PKR</span>
+          </div>
+        </div>
+
+        <button type="submit">Generate Bill</button>
+      </form>
+    </div>
+
+    <!-- View Bills -->
+    <div class="tab-content" id="view-bills-content">
+      <div class="card">
+        <h3>View Bills</h3>
+        
+        <div class="filters">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="search-guest">Search by Guest Name</label>
+              <input type="text" id="search-guest" placeholder="Enter guest name">
+            </div>
+            <div class="form-group">
+              <label for="search-room">Search by Room No</label>
+              <input type="text" id="search-room" placeholder="Enter room number">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="search-date-from">Date From</label>
+              <input type="date" id="search-date-from">
+            </div>
+            <div class="form-group">
+              <label for="search-date-to">Date To</label>
+              <input type="date" id="search-date-to">
+            </div>
+          </div>
+          <button id="search-bills-btn">Search Bills</button>
+        </div>
+
+        <div class="table-container">
+          <table id="billsTable">
+            <thead>
+              <tr>
+                <th>Bill ID</th>
+                <th>Guest Name</th>
+                <th>Room No</th>
+                <th>Issue Date</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="7" class="empty-state">No bills found. Generate a bill or adjust your search criteria.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Update Bill -->
+    <div class="tab-content" id="update-bill-content">
+      <div class="card">
+        <h3>Update Bill</h3>
+        
+        <div class="form-group">
+          <label for="search-bill">Search Bill (by Bill ID or Guest Name)</label>
+          <input type="text" id="search-bill" placeholder="Enter Bill ID or guest name">
+        </div>
+        <button id="search-bill-btn">Search Bill</button>
+        
+        <div id="update-bill-form" style="display: none;">
+          <h4 style="margin-top: 20px;">Bill Details</h4>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="update-bill-id">Bill ID</label>
+              <input type="text" id="update-bill-id" readonly>
+            </div>
+            <div class="form-group">
+              <label for="update-guest-name">Guest Name</label>
+              <input type="text" id="update-guest-name" readonly>
+            </div>
+          </div>
+          
+          <h4>Update Services</h4>
+          <div id="update-services-list">
+            <!-- Services will be populated here -->
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="update-tax-rate">Tax Rate (%)</label>
+              <input type="number" id="update-tax-rate" min="0" max="30" required>
+            </div>
+            <div class="form-group">
+              <label for="update-discount">Discount (PKR)</label>
+              <input type="number" id="update-discount" min="0">
+            </div>
+          </div>
+          
+          <div class="bill-summary">
+            <h4>Updated Bill Summary</h4>
+            <div class="summary-item">
+              <span>Room Charges:</span>
+              <span id="update-room-charges">0 PKR</span>
+            </div>
+            <div class="summary-item">
+              <span>Service Charges:</span>
+              <span id="update-service-charges">0 PKR</span>
+            </div>
+            <div class="summary-item">
+              <span>Subtotal:</span>
+              <span id="update-subtotal">0 PKR</span>
+            </div>
+            <div class="summary-item">
+              <span>Tax:</span>
+              <span id="update-tax-amount">0 PKR</span>
+            </div>
+            <div class="summary-item">
+              <span>Discount:</span>
+              <span id="update-discount-amount">0 PKR</span>
+            </div>
+            <div class="summary-item total">
+              <span>Total Amount:</span>
+              <span id="update-total-amount">0 PKR</span>
+            </div>
+          </div>
+          
+          <button id="update-bill-btn">Update Bill</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment Status -->
+    <div class="tab-content" id="payment-status-content">
+      <div class="card">
+        <h3>Payment Status</h3>
+        
+        <div class="form-group">
+          <label for="search-bill-status">Search Bill (by Bill ID or Guest Name)</label>
+          <input type="text" id="search-bill-status" placeholder="Enter Bill ID or guest name">
+        </div>
+        <button id="search-bill-status-btn">Search Bill</button>
+        
+        <div id="payment-status-details" style="display: none; margin-top: 20px;">
+          <h4>Bill Details</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Bill ID</label>
+              <p id="status-bill-id"></p>
+            </div>
+            <div class="form-group">
+              <label>Guest Name</label>
+              <p id="status-guest-name"></p>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Total Amount</label>
+              <p id="status-total-amount"></p>
+            </div>
+            <div class="form-group">
+              <label>Amount Paid</label>
+              <p id="status-amount-paid"></p>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Balance Due</label>
+              <p id="status-balance-due"></p>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <p id="status-current-status"></p>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="payment-amount">Payment Amount (PKR)</label>
+            <input type="number" id="payment-amount" min="0">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="payment-method">Payment Method</label>
+              <select id="payment-method">
+                <option value="cash">Cash</option>
+                <option value="card">Credit/Debit Card</option>
+                <option value="bank">Bank Transfer</option>
+                <option value="digital">Digital Wallet</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="payment-date">Payment Date</label>
+              <input type="date" id="payment-date">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="payment-notes">Payment Notes</label>
+            <textarea id="payment-notes" rows="3" placeholder="Any additional notes about this payment"></textarea>
+          </div>
+          
+          <button id="mark-paid-btn">Mark as Paid</button>
+          <button id="add-payment-btn" style="background: #4caf50;">Add Partial Payment</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment History -->
+    <div class="tab-content" id="payment-history-content">
+      <div class="card">
+        <h3>Payment History</h3>
+        
+        <div class="form-group">
+          <label for="search-payment-history">Search by Guest Name or Bill ID</label>
+          <input type="text" id="search-payment-history" placeholder="Enter guest name or Bill ID">
+        </div>
+        <button id="search-payment-history-btn">Search</button>
+        
+        <div class="table-container">
+          <table id="paymentHistoryTable">
+            <thead>
+              <tr>
+                <th>Bill ID</th>
+                <th>Guest Name</th>
+                <th>Payment Date</th>
+                <th>Amount Paid</th>
+                <th>Payment Method</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="6" class="empty-state">No payment history found. Search for a guest or bill to view payment history.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notification" id="notification">Operation completed successfully!</div>
+
+  <script src="payment.js"></script>
+</body>
+</html>
