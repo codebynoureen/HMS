@@ -8,7 +8,7 @@ body {
 
 header {
   height: 300px;
-  background: url("images/Hotel.jpg") no-repeat center center;
+  background: url("Hotel.jpg") no-repeat center center;
   background-size: cover;
   background-color: lightgray; /* test */
   display: flex;              /* flexbox activate */
